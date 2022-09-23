@@ -8,7 +8,9 @@ export class ChapterDb {
   dbpool: Database;
 
   public insert(id_manga: string) {
-    this.dbpool.run(`INSERT INTO chapter (chapter_id) VALUES("${id_manga}")`);
+    this.dbpool
+      .run(`INSERT INTO chapter (chapter_id) VALUES("${id_manga}")`)
+      .exec();
   }
 
   public findOne(callback?: (err: Error, rows: any[]) => void): string {
