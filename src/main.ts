@@ -55,11 +55,11 @@ client.on("ready", () => {
     return channel.id == process.env.CHANNEL_ID;
   });
 
-  const sqlite3 = sqlite.verbose();
-
-  const db = new sqlite3.Database("./md.db");
-
   cron.schedule("* * * * *", () => {
+    const sqlite3 = sqlite.verbose();
+
+    const db = new sqlite3.Database("./md.db");
+
     let dbClient = new ChapterDb(db);
 
     dbClient.findOne((_, res) => {
@@ -76,6 +76,7 @@ client.on("ready", () => {
             }
 
             dbClient.insert(element.id);
+
             (channel as TextChannel).send(
               `${element.manga_title} ${element.chapter} \n https://mangadex.org/chapter/${element.id}/1`
             );

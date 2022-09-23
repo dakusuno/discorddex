@@ -8,16 +8,21 @@ export class ChapterDb {
   dbpool: Database;
 
   public insert(id_manga: string) {
-    this.dbpool
-      .run(`INSERT INTO chapter (chapter_id) VALUES("${id_manga}")`)
-      .exec();
+    this.dbpool.run(
+      `INSERT INTO chapter (chapter_id) VALUES(?)`,
+      [id_manga],
+      (_res) => {}
+    );
   }
 
   public findOne(callback?: (err: Error, rows: any[]) => void): string {
     var a = [];
 
     this.dbpool.serialize(() => {
-      this.dbpool.all(`select * from chapter limit 1`, callback);
+      this.dbpool.all(
+        `SELECT * FROM chapter ORDER BY id DESC LIMIT 1`,
+        callback
+      );
     });
     if (a.length > 0) {
       return a[0];
